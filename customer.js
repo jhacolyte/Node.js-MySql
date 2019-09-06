@@ -19,15 +19,15 @@ function displayItemsForSale() {
         "select item_id,product_name, price, stock_quantity from products where stock_quantity>0",
         function(err, res) {
             if (err) throw err;
-            console.log("Id \t Name \t Price \t Quantity\n");
+            console.log("Id | Name | Price | Quantity\n");
             for (var i = 0; i < res.length; i++) {
                 console.log(
                     res[i].item_id +
-                    "\t" +
+                    "  |  " +
                     res[i].product_name +
-                    "\t" +
+                    "  |  " +
                     res[i].price +
-                    "\t" +
+                    "  |  " +
                     res[i].stock_quantity +
                     "\n"
                 );
