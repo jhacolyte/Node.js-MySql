@@ -32,14 +32,14 @@ function displayMenu() {
     ])
     .then(function(choice) {
       switch (choice.Menu) {
-        case "a: View Products for Sale":
-          viewProductsForSale();
+        case "a: View Products Inventory":
+          viewProductsInventory();
           break;
         case "b: View Low Inventory":
           viewLowInventory();
           break;
-        case "c: Add to Inventory":
-          addToInventory();
+        case "c: Replenish Inventory":
+          replenishInventory();
           break;
         case "d: Add New Product":
           addNewProduct();
@@ -49,4 +49,28 @@ function displayMenu() {
           break;
       }
     });
+}
+
+function viewProductsInventory() {
+  console.log("viewProductsInventory");
+  var sql =
+    "select item_id,product_name, price, stock_quantity from products where stock_quantity>0";
+  connection.query(sql, function(err, res) {
+    if (err) throw err;
+    console.log("Items available for Sale");
+    console.log("Id \t Name \t Price \t Quantity\n");
+    for (var i = 0; i < res.length; i++) {
+      console.log(
+        res[i].item_id +
+          "\t" +
+          res[i].product_name +
+          "\t" +
+          res[i].price +
+          "\t" +
+          res[i].stock_quantity +
+          "\n"
+      );
+    }
+    displayMenu();
+  });
 }
