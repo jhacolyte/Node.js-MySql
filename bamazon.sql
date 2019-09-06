@@ -18,7 +18,6 @@ stock_quantity integer
 primary key
     (item_id)
 );
-
     insert into products
         (item_id, product_name, department_name, price, stock_quantity)
     values
@@ -27,7 +26,7 @@ primary key
         (03, "handbag", "women", 50.00, 6),
         (04, "Led Light Bulb", "Home improvement", 39.99, 150),
         (05, "echo not", "Electronics", 29.99, 65),
-        (06, "Leica M 246", "Electronics", 13, 950, 35),
+        (06, "Leica M 246", "Electronics", 13950, 35),
         (07, "Node.js for Dummies", "Books", 12.79, 500),
         (08, "The Tales of Beedle the Bard", "Books", 3600000, 7),
         (09, "Electric Martini Maker", "appliance", 150, 16),
