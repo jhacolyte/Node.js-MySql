@@ -58,19 +58,106 @@ function viewProductsForSale() {
   connection.query(sql, function(err, res) {
     if (err) throw err;
     console.log("Items available for Sale");
-    console.log("Id \t Name \t Price \t Quantity\n");
+    console.log("Id | Name | Price | Quantity\n");
     for (var i = 0; i < res.length; i++) {
       console.log(
         res[i].item_id +
-          "\t" +
+          "  |  " +
           res[i].product_name +
-          "\t" +
+          "  |  " +
           res[i].price +
-          "\t" +
+          "  |  " +
           res[i].stock_quantity +
           "\n"
       );
     }
     displayMenu();
+  });
+}
+
+function viewLowInventory() {
+  var sql =
+    "select item_id,product_name, price, stock_quantity from products where stock_quantity<5";
+  connection.query(sql, function(err, res) {
+    if (err) throw err;
+    console.log("Items with inventory count lower than five.");
+    console.log("Id | Name | Price | Quantity\n");
+    for (var i = 0; i < res.length; i++) {
+      console.log(
+        res[i].item_id +
+          "  |  " +
+          res[i].product_name +
+          "  |  " +
+          res[i].price +
+          "  |  " +
+          res[i].stock_quantity +
+          "\n"
+      );
+    }
+    displayMenu();
+  });
+}
+
+function addToInventory() {
+  var sql = "select item_id, product_name from products";
+  var choicesArray = [];
+  connection.query(sql, function(err, res) {
+    if (err) throw err;
+    console.log("Item Id | Product Name");
+    for (var i = 0; i < res.length; i++) {
+      console.log(res[i].item_id + "  |  " + res[i].product_name);
+      choicesArray.push(res[i].item_id + "," + res[i].product_name);
+    }
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "product",
+          message: "Select the item number to add more to inventory??"
+        },
+        {
+          type: "input",
+          name: "quantity",
+          message: "How many items would like to add to invenotry??"
+        }
+      ])
+      .then(function(answer) {
+        var purchaseItemId = answer.product;
+        if (
+          purchaseItemId > res.length + 1 ||
+          isNaN(purchaseItemId || isNaN(answer.quantity))
+        ) {
+          console.log("invalid Input");
+          if (purchaseItemId > res.length + 1 || isNaN(purchaseItemId))
+            console.log("The item id is not valid");
+          if (isNaN(answer.quantity)) console.log("Invalid quantity");
+          displayMenu();
+        } else {
+          connection.query(
+            "select stock_quantity from products where item_id = ?",
+            [purchaseItemId],
+            function(err, res) {
+              if (err) throw err;
+              var updateQuantity =
+                res[0].stock_quantity + parseFloat(answer.quantity);
+              connection.query(
+                "update products set ? where ?",
+                [
+                  {
+                    stock_quantity: updateQuantity
+                  },
+                  {
+                    item_id: purchaseItemId
+                  }
+                ],
+                function(err, res) {
+                  if (err) throw err;
+                  displayMenu();
+                }
+              );
+            }
+          );
+        }
+      });
   });
 }
