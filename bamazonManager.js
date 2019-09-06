@@ -32,14 +32,14 @@ function displayMenu() {
     ])
     .then(function(choice) {
       switch (choice.Menu) {
-        case "a: View Products Inventory":
-          viewProductsInventory();
+        case "a: View Products for Sale":
+          viewProductsForSale();
           break;
         case "b: View Low Inventory":
           viewLowInventory();
           break;
-        case "c: Replenish Inventory":
-          replenishInventory();
+        case "c: Add to Inventory":
+          addToInventory();
           break;
         case "d: Add New Product":
           addNewProduct();
@@ -51,8 +51,8 @@ function displayMenu() {
     });
 }
 
-function viewProductsInventory() {
-  console.log("viewProductsInventory");
+function viewProductsForSale() {
+  console.log("viewProductsForSale");
   var sql =
     "select item_id,product_name, price, stock_quantity from products where stock_quantity>0";
   connection.query(sql, function(err, res) {
